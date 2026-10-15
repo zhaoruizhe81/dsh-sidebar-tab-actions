@@ -287,7 +287,7 @@ describe('TabMenuItems', () => {
   function mount() {
     const registered = []
     const ctx = {
-      locale: { bind: () => (key) => dict[key], register: () => () => {} },
+      locale: { bind: () => (key) => zh[key], register: () => () => {} },
       effect: (factory) => factory(),
       slots: { inject: (name, factory) => factory(), register: (options, component) => { registered.push([options, component]); return () => {} } },
       sidebarRight: { close: () => {} },
@@ -296,15 +296,6 @@ describe('TabMenuItems', () => {
     // decorator has its own suite and its own fake DOM.
     plugin.apply(ctx, { badge: false })
     return { Component: registered[0][1], face: registered[0][0].inject() }
-  }
-
-  const dict = {
-    pin: '固定标签',
-    unpin: '取消固定',
-    closeOthers: '关闭其他标签',
-    closeRight: '关闭右侧标签',
-    closeLeft: '关闭左侧标签',
-    closeAll: '关闭所有标签',
   }
 
   /** Point the component's `document` lookup at a fake strip: tab1..tab4. */
@@ -343,7 +334,7 @@ describe('TabMenuItems', () => {
         actions: { togglePin: () => {} },
         closeTabs: face.closeTabs,
         syncChips: face.syncChips,
-        t: (key) => dict[key],
+        t: (key) => zh[key],
       })
       return tree.props.children.filter((row) => row !== null)
     } finally {
@@ -357,7 +348,7 @@ describe('TabMenuItems', () => {
 
   it('leads with the pin row, which starts a new group', () => {
     const rendered = rows([], 'tab2')
-    assert.deepEqual(labels(rendered), ['固定标签', '关闭其他标签', '关闭右侧标签', '关闭左侧标签', '关闭所有标签'])
+    assert.deepEqual(labels(rendered), ['固定', '关闭其他', '关闭右侧', '关闭左侧', '关闭全部'])
     assert.equal(rendered[0].props.separatorBefore, true)
     assert.equal(rendered[0].key, 'pin')
   })
@@ -372,16 +363,16 @@ describe('TabMenuItems', () => {
   })
 
   it('hides the left row for the first tab and the right row for the last', () => {
-    assert.equal(labels(rows([], 'tab1')).includes('关闭左侧标签'), false)
-    assert.equal(labels(rows([], 'tab4')).includes('关闭右侧标签'), false)
+    assert.equal(labels(rows([], 'tab1')).includes('关闭左侧'), false)
+    assert.equal(labels(rows([], 'tab4')).includes('关闭右侧'), false)
   })
 
   it('hides every close row when a pinned tab is the only target', () => {
-    assert.deepEqual(labels(rows(['tab1', 'tab3', 'tab4'], 'tab2')), ['固定标签', '关闭所有标签'])
+    assert.deepEqual(labels(rows(['tab1', 'tab3', 'tab4'], 'tab2')), ['固定', '关闭全部'])
   })
 
   it('hides every close row for the lone quiet chip', () => {
-    assert.deepEqual(labels(rows([], 'tab1', 'tab1')), ['固定标签'])
+    assert.deepEqual(labels(rows([], 'tab1', 'tab1')), ['固定'])
   })
 
   it('flips the pin label with the tab`s own state', () => {
@@ -401,19 +392,19 @@ describe('TabMenuItems', () => {
         actions: { togglePin: (id) => seen.push(`pin:${id}`) },
         closeTabs: (ids) => seen.push(`close:${ids.join(',')}`),
         syncChips: () => seen.push('sync'),
-        t: (key) => dict[key],
+        t: (key) => zh[key],
       })
       const rowFor = (label) => tree.props.children.find((row) => row !== null && row.props.children === label)
 
-      rowFor('关闭其他标签').props.onSelect()
+      rowFor('关闭其他').props.onSelect()
       assert.deepEqual(seen, ['dismiss', 'close:tab3,tab4'])
 
       seen.length = 0
-      rowFor('固定标签').props.onSelect()
+      rowFor('固定').props.onSelect()
       assert.deepEqual(seen, ['dismiss', 'pin:tab2', 'sync'])
 
       seen.length = 0
-      rowFor('关闭所有标签').props.onSelect()
+      rowFor('关闭全部').props.onSelect()
       assert.deepEqual(seen, ['dismiss', 'close:tab2,tab3,tab4'])
     } finally {
       if (previous === undefined) delete globalThis.document
@@ -422,7 +413,7 @@ describe('TabMenuItems', () => {
   })
 
   it('marks the close-all row destructive', () => {
-    const all = rows([], 'tab2').find((row) => row.props.children === '关闭所有标签')
+    const all = rows([], 'tab2').find((row) => row.props.children === '关闭全部')
     assert.equal(all.props.danger, true)
   })
 })
