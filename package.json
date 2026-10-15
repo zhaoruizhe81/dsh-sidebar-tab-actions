@@ -1,0 +1,56 @@
+{
+  "name": "dsh-sidebar-tab-actions",
+  "version": "0.1.0",
+  "description": "dsh Web GUI 插件：给右侧栏标签的右键菜单补上固定标签、关闭其他/左侧/右侧/所有标签。",
+  "type": "module",
+  "main": "lib/index.js",
+  "exports": {
+    ".": {
+      "default": "./lib/index.js"
+    },
+    "./client": {
+      "default": "./lib/client.js"
+    },
+    "./package.json": "./package.json"
+  },
+  "files": [
+    "lib",
+    "cordis.patch.yml",
+    "README.md",
+    "LICENSE"
+  ],
+  "engines": {
+    "node": "^22.19.0 || >=24.0.0"
+  },
+  "scripts": {
+    "test": "node --test test/*.mjs"
+  },
+  "keywords": [
+    "dsh",
+    "dsh-plugin",
+    "dsh-client-plugin",
+    "deepseek-harness",
+    "sidebar"
+  ],
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/zhaoruizhe81/dsh-sidebar-tab-actions.git"
+  },
+  "bugs": {
+    "url": "https://github.com/zhaoruizhe81/dsh-sidebar-tab-actions/issues"
+  },
+  "homepage": "https://github.com/zhaoruizhe81/dsh-sidebar-tab-actions#readme",
+  "dsh": {
+    "engines": {
+      "dsh": ">=0.2.0-rc.2"
+    },
+    "bundle": {
+      "patch": "./cordis.patch.yml"
+    },
+    "client": {
+      "platform": "web",
+      "inject": []
+    }
+  }
+}

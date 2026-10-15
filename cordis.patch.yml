@@ -1,0 +1,15 @@
+# dsh-sidebar-tab-actions bundle patch：把插件行插进 profile roster。
+# host 半边（exports "."）是空的；全部行为在浏览器半边（exports "./client"，
+# 由 package.json 的 dsh.client 声明驱动），注册进 sidebar.right.tab.menu.item。
+#
+# 想调参不要在 profile 的 cordis.patch.yml 里改这里，而是在 profile 层用同一个
+# id 覆盖 config（后面的层覆盖前面的层）：
+#
+#   - id: sidebar-tab-actions
+#     name: dsh-sidebar-tab-actions
+#     config:
+#       badge: false        # 关掉固定标签的 chip 徽标
+#
+- insert:
+    - id: sidebar-tab-actions
+      name: dsh-sidebar-tab-actions
